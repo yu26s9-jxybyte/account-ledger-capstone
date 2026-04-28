@@ -2,8 +2,6 @@ package com.pluralsight;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.time.LocalDate;
-import java.time.LocalTime;
 
 public class HomeScreen {
     public static void main(String[] args){
@@ -43,5 +41,52 @@ public class HomeScreen {
         }
     }
   }
+  private static void addDeposit(Scanner scanner, ArrayList<Transaction> transactions){
+        System.out.print("Date (YYYY-MM-DD):");
+        String date = scanner.nextLine();
 
+        System.out.print("Time (HH:MM:SS)");
+        String time = scanner.nextLine();
+
+        System.out.print("Description: ");
+        String description = scanner.nextLine();
+
+        System.out.print("Shop: ");
+        String shop = scanner.nextLine();
+
+        System.out.print("Amount: ");
+        double amount = Double.parseDouble(scanner.nextLine());
+
+        Transaction t = new Transaction(date, time, description, shop, amount);
+
+        TransactionService.saveTransaction(t);
+        transactions.add(t);
+
+        System.out.println("Deposit added");
+  }
+  private static void addPayment(Scanner scanner, ArrayList<Transaction> transactions){
+        System.out.print("Date (YYYY-MM-DD):" );
+        String date = scanner.nextLine();
+
+        System.out.print("Time (HH:MM:SS):" );
+        String time = scanner.nextLine();
+
+        System.out.print("Description: ");
+        String description = scanner.nextLine();
+
+        System.out.print("Vendor: ");
+        String vendor = scanner.nextLine();
+
+        System.out.print("Amount: ");
+        double amount = Double.parseDouble(scanner.nextLine());
+
+        amount = -Math.abs(amount); //
+
+        Transaction t = new Transaction(date, time, description, vendor, amount);
+
+        TransactionService.saveTransaction(t);
+        transactions.add(t);
+
+        System.out.println("Payment added");
+  }
 }
