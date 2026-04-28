@@ -37,7 +37,7 @@ public class TransactionService {
     public static void saveTransaction(Transaction t){
         try{
             FileWriter writer = new FileWriter("transactions.csv", true );
-            writer.write(t.toCSV() + " ");
+            writer.write(t.toCSV() + "\n");
             writer.close();
         } catch (Exception e) {
             System.out.println("Could not save the transactions.");
