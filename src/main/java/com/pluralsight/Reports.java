@@ -64,9 +64,9 @@ public class Reports {
     public static void searchByShop(ArrayList<Transaction> transactions){
         for (Transaction t : transactions){
             String shopName;
-            if (t.getShop().equalsIgnoreCase(shopName)){
-                printTransaction(t);
-            }
+//            if (t.getShop().equalsIgnoreCase(shopName)){
+//                printTransaction(t);
+//            }
         }
     }
     // new helper method to print transactions
