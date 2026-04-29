@@ -29,9 +29,9 @@ public class HomeScreen {
                 addPayment(scanner, transactions);
                 break;
 
-//            case "L":
-//                LedgerScreen.showLedger(scanner, transactions);
-//                break;
+           case "L":
+                LedgerScreen.showLedger(scanner, transactions);
+                break;
 
             case "X":
                 System.out.println("Goodbye!");

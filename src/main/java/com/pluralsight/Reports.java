@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Reports {
 
     // month to date
-    public static void monthTODate(ArrayList<Transaction> transactions) {
+    public static void monthToDate(ArrayList<Transaction> transactions) {
         LocalDate today = LocalDate.now();
 
         for (Transaction t : transactions) {
@@ -88,7 +88,7 @@ public class Reports {
 
             switch (choice) {
                 case "1":
-                    monthTODate(transactions);
+                    monthToDate(transactions);
                     break;
 
                 case "2":
