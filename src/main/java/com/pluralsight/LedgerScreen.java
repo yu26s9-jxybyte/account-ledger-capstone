@@ -3,58 +3,56 @@ package com.pluralsight;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import static com.pluralsight.Reports.printTransaction;
-
 public class LedgerScreen {
-public static void showLedger(Scanner scanner, ArrayList<Transaction> transactions){
 
-    while (true){
-        System.out.println("Ledger");
-        System.out.println("Choose an option: ");
-        System.out.println("A) All Transactions");
-        System.out.println("D) Deposits Only");
-        System.out.println("P) Payments Only");
-        System.out.println("R) Reports");
-        System.out.println("H) Home");
+    public static void showLedger(Scanner scanner, ArrayList<Transaction> transactions) {
 
-    String choice = scanner.nextLine().trim().toUpperCase();
+        while (true) {
+            System.out.println("\nLedger");
+            System.out.println("A) All Transactions");
+            System.out.println("D) Deposits Only");
+            System.out.println("P) Payments Only");
+            System.out.println("R) Reports");
+            System.out.println("H) Home");
+            System.out.print("Choose an option: ");
 
-    switch (choice){
-        case "A":
-            showAll(transactions);
-            break;
+            String choice = scanner.nextLine().trim().toUpperCase();
 
-        case "D":
-            showDeposits(transactions);
-            break;
+            switch (choice) {
+                case "A":
+                    showAll(transactions);
+                    break;
 
-        case "P":
-            showPayments(transactions);
-            break;
+                case "D":
+                    showDeposits(transactions);
+                    break;
 
-        case "R":
-            Reports.reportsMenu(transactions, scanner);
-            break;
+                case "P":
+                    showPayments(transactions);
+                    break;
 
-        case "H":
-            return; // back to the home screen
+                case "R":
+                    Reports.reportsMenu(transactions, scanner);
+                    break;
 
-        default:
-            System.out.println("Invalid option. Try again.");
+                case "H":
+                    return;
+
+                default:
+                    System.out.println("Invalid option. Try again.");
+            }
+        }
     }
 
-    }
-    // shows transactions
-    private static void showAll(ArrayList<Transaction> transactions){
+    private static void showAll(ArrayList<Transaction> transactions) {
         System.out.println("\nAll Transactions");
         printHeader();
 
-        for int i = transactions.size() - 1; i >= 0; i--){
+        for (int i = transactions.size() - 1; i >= 0; i--) {
             printTransaction(transactions.get(i));
         }
     }
 
-    // shows only deposits
     private static void showDeposits(ArrayList<Transaction> transactions) {
         System.out.println("\nDeposits Only");
         printHeader();
@@ -66,6 +64,26 @@ public static void showLedger(Scanner scanner, ArrayList<Transaction> transactio
             }
         }
     }
-}
 
+    private static void showPayments(ArrayList<Transaction> transactions) {
+        System.out.println("\nPayments Only");
+        printHeader();
+
+        for (int i = transactions.size() - 1; i >= 0; i--) {
+            Transaction t = transactions.get(i);
+            if (t.getAmount() < 0) {
+                printTransaction(t);
+            }
+        }
+    }
+
+    private static void printHeader() {
+        System.out.println("Date | Time | Description | Vendor | Amount");
+        System.out.println("----------------------------------------------------");
+    }
+
+    private static void printTransaction(Transaction t) {
+        System.out.println(
+                t.getDate() + " | " + t.getTime() + " | " + t.getDescription() + " | " + t.getShop() + " | " + t.getAmount());
+    }
 }
