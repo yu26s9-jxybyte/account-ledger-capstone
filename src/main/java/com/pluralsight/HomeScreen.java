@@ -63,10 +63,10 @@ public class HomeScreen {
         String defaultDate = now.toLocalDate().toString();
         String defaultTime = now.toLocalTime().withNano(0).toString();
 
-        // ask user for date, but allow Enter to auto-fill
+        // ask user for date, but allow enter to auto-fill
         String date = promptOrDefault(scanner, "Date (YYYY-MM-DD) [Press Enter for " + defaultDate + "]: ", defaultDate);
 
-        // Ask user for time, but allow Enter to auto-fill
+        // Ask user for time, but allow enter to auto-fill
         String time = promptOrDefault(
                 scanner, "Time (HH:MM:SS) [Press Enter for " + defaultTime + "]: ", defaultTime);
 
@@ -74,7 +74,7 @@ public class HomeScreen {
         System.out.print("Description: ");
         String description = scanner.nextLine();
 
-        System.out.print("Shop: ");
+        System.out.print("Vendor: ");
         String shop = scanner.nextLine();
 
         System.out.print("Amount: ");

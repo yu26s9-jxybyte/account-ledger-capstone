@@ -104,7 +104,7 @@ public class Reports {
                     break;
 
                 case "5":
-                    System.out.print("Enter shop name: ");
+                    System.out.print("Enter vendor name: ");
                     String shop = scanner.nextLine().trim();
                     searchByShop(transactions, shop);
                     break;
