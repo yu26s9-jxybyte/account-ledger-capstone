@@ -12,11 +12,11 @@ public class HomeScreen {
 
     while (true){
         System.out.println("Home Screen");
-        System.out.println("Choose an option: ");
         System.out.println("D) Add a deposit");
         System.out.println("P) Make a payment");
         System.out.println("L) Ledger");
         System.out.println("X) Exit");
+        System.out.println("Choose an option: ");
 
         String choice = scanner.nextLine().trim().toUpperCase();
 
