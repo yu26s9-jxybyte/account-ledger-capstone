@@ -1,19 +1,26 @@
 package com.pluralsight;
 
 import com.pluralsight.models.Transaction;
+import com.pluralsight.ui.Console;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Reports {
 
     // month to date
-    public static void monthToDate(ArrayList<Transaction> transactions) {
+    private final Console console;
+    public Reports(Console console){
+        this.console = console;
+    }
+    public void monthToDate(ArrayList<Transaction> transactions) {
         LocalDate today = LocalDate.now();
 
         for (Transaction t : transactions) {
-            LocalDate date = LocalDate.parse(t.getDate());
+            LocalDateTime localDateTime = t.getDateTime();
+            LocalDate date = localDateTime.toLocalDate();
 
             if (date.getMonth() == today.getMonth() &&
                     date.getYear() == today.getYear()) {
@@ -23,12 +30,13 @@ public class Reports {
     }
 
     // previous month
-    public static void previousMonth(ArrayList<Transaction> transactions) {
+    public void previousMonth(ArrayList<Transaction> transactions) {
         LocalDate today = LocalDate.now();
         LocalDate lastMonth = today.minusMonths(1);
 
         for (Transaction t : transactions) {
-            LocalDate date = LocalDate.parse(t.getDate());
+            LocalDateTime localDateTime = t.getDateTime();
+            LocalDate date = localDateTime.toLocalDate();
 
             if (date.getMonth() == lastMonth.getMonth() &&
                     date.getYear() == lastMonth.getYear()) {
@@ -38,11 +46,12 @@ public class Reports {
     }
 
     // year to date
-    public static void yearToDate(ArrayList<Transaction> transactions) {
+    public void yearToDate(ArrayList<Transaction> transactions) {
         LocalDate today = LocalDate.now();
 
         for (Transaction t : transactions) {
-            LocalDate date = LocalDate.parse(t.getDate());
+            LocalDateTime localDateTime = t.getDateTime();
+            LocalDate date = localDateTime.toLocalDate();
 
             if (date.getYear() == today.getYear()) {
                 printTransaction(t);
@@ -51,12 +60,13 @@ public class Reports {
     }
 
     // previous year
-    public static void previousYear(ArrayList<Transaction> transactions) {
+    public void previousYear(ArrayList<Transaction> transactions) {
         LocalDate today = LocalDate.now();
         int lastYear = today.getYear() - 1;
 
         for (Transaction t : transactions) {
-            LocalDate date = LocalDate.parse(t.getDate());
+            LocalDateTime localDateTime = t.getDateTime();
+            LocalDate date = localDateTime.toLocalDate();
 
             if (date.getYear() == lastYear) {
                 printTransaction(t);
@@ -65,16 +75,16 @@ public class Reports {
     }
 
     // search by shop
-    public static void searchByShop(ArrayList<Transaction> transactions, String shopName) {
+    public void searchByShop(ArrayList<Transaction> transactions, String vendor) {
         for (Transaction t : transactions) {
-            if (t.getShop().equalsIgnoreCase(shopName)) {
+            if (t.getVendor().equalsIgnoreCase(vendor)) {
                 printTransaction(t);
             }
         }
     }
 
     // reports menu this is what LedgerScreen calls
-    public static void reportsMenu(ArrayList<Transaction> transactions, Scanner scanner) {
+    public void reportsMenu(ArrayList<Transaction> transactions) {
 
         while (true) {
             System.out.println("\nReports");
@@ -86,32 +96,31 @@ public class Reports {
             System.out.println("0) Back");
             System.out.print("Choose an option: ");
 
-            String choice = scanner.nextLine().trim();
+            int choice = console.promptForInt("Choose an option: ", 0,5);
 
             switch (choice) {
-                case "1":
+                case 1:
                     monthToDate(transactions);
                     break;
 
-                case "2":
+                case 2:
                     previousMonth(transactions);
                     break;
 
-                case "3":
+                case 3:
                     yearToDate(transactions);
                     break;
 
-                case "4":
+                case 4:
                     previousYear(transactions);
                     break;
 
-                case "5":
-                    System.out.print("Enter vendor name: ");
-                    String shop = scanner.nextLine().trim();
+                case 5:
+                    String shop = console.promptForString("Enter vendor name: ");
                     searchByShop(transactions, shop);
                     break;
 
-                case "0":
+                case 0:
                     return;
 
                 default:
@@ -121,12 +130,12 @@ public class Reports {
     }
 
     // helper method to print a transaction
-    private static void printTransaction(Transaction t) {
+    private void printTransaction(Transaction t) {
         System.out.println(
                 t.getDate() + " | " +
                         t.getTime() + " | " +
                         t.getDescription() + " | " +
-                        t.getShop() + " | " +
+                        t.getVendor() + " | " +
                         t.getAmount()
         );
     }
