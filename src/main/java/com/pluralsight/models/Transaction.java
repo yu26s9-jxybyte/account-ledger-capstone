@@ -1,4 +1,4 @@
-package com.pluralsight;
+package com.pluralsight.models;
 
 public class Transaction {
     //assignments

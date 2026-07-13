@@ -1,13 +1,19 @@
-package com.pluralsight;
+package com.pluralsight.data;
+
+import com.pluralsight.models.Transaction;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 
-public class TransactionService {
+public class TransactionFileReader {
+    private ArrayList<Transaction> transactions;
+    public TransactionFileReader(ArrayList<Transaction> transactions){
+        this.transactions = transactions;
+    }
 
-    public static ArrayList<Transaction> loadTransactions() {
+    public ArrayList<Transaction> loadTransactions() {
         ArrayList<Transaction> transactions = new ArrayList<>();
 
         try {
@@ -41,7 +47,7 @@ public class TransactionService {
         return transactions;
     }
 
-    public static void saveTransaction(Transaction t) {
+    public void saveTransaction(Transaction t) {
         try {
             FileWriter writer = new FileWriter("transactions.csv", true);
 

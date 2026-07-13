@@ -1,62 +1,57 @@
 package com.pluralsight;
 
+import com.pluralsight.data.TransactionFileReader;
+import com.pluralsight.models.Transaction;
+import com.pluralsight.ui.Console;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class HomeScreen {
-    public static void main(String[] args){
-    Scanner scanner = new Scanner(System.in);
+    private final Console console;
+    private final TransactionFileReader transactionFileReader;
+    //ArrayList<Transaction> transactions = TransactionService.loadTransactions();
+    public HomeScreen(Console console, TransactionFileReader transactionFileReader) {
+        this.console = console;
+        this.transactionFileReader = transactionFileReader;
+    }
 
-    ArrayList<Transaction> transactions = TransactionService.loadTransactions();
+    public void mainDisplay(){
 
     while (true){
-        System.out.println("Home Screen");
-        System.out.println("D) Add a deposit");
-        System.out.println("P) Make a payment");
-        System.out.println("L) Ledger");
-        System.out.println("X) Exit");
-        System.out.println("Choose an option: ");
-
-        String choice = scanner.nextLine().trim().toUpperCase();
+        String choice = console.promptForString("""
+                Home Screen
+                [D] Add a deposit
+                [P] Make a Payment
+                [L] Ledger
+                [X] Exit
+                Choose an option:
+                """);
 
         switch(choice){
             case "D":
-                addDeposit(scanner, transactions);
+                addDeposit(transactions);
                 break;
-
             case "P":
-                addPayment(scanner, transactions);
+                addPayment(transactions);
                 break;
-
            case "L":
-                LedgerScreen.showLedger(scanner, transactions);
+                LedgerScreen.showLedger(transactions);
                 break;
-
             case "X":
                 System.out.println("Goodbye!");
                 return;
-
             default:
                 System.out.println("Invalid choice. Please select valid option.");
         }
     }
   }
     //lets the user press Enter to use a default value
-    private static String promptOrDefault(Scanner scanner, String message, String defaultValue) {
-        System.out.print(message);
-        String input = scanner.nextLine().trim();
-
-        // if user presses enter, return the default value
-        if (input.isEmpty()) {
-            return defaultValue;
-        }
-
-        return input; // if not, return what they typed
-    }
 
 
-    private static void addDeposit(Scanner scanner, ArrayList<Transaction> transactions) {
+
+    private void addDeposit(ArrayList<Transaction> transactions) {
 
         // grabs the system's current date and time
         LocalDateTime now = LocalDateTime.now();
@@ -64,53 +59,49 @@ public class HomeScreen {
         String defaultTime = now.toLocalTime().withNano(0).toString();
 
         // ask user for date, but allow enter to auto-fill
-        String date = promptOrDefault(scanner, "Date (YYYY-MM-DD) [Press Enter for " + defaultDate + "]: ", defaultDate);
+        String date = console.promptOrDefault( "Date (YYYY-MM-DD) [Press Enter for " + defaultDate + "]: ", defaultDate);
 
         // Ask user for time, but allow enter to auto-fill
-        String time = promptOrDefault(
-                scanner, "Time (HH:MM:SS) [Press Enter for " + defaultTime + "]: ", defaultTime);
+        String time = console.promptOrDefault(
+                 "Time (HH:MM:SS) [Press Enter for " + defaultTime + "]: ", defaultTime);
 
         // These have to be typed by the user
-        System.out.print("Description: ");
-        String description = scanner.nextLine();
+        String description = console.promptForString("Description: ");
 
-        System.out.print("Vendor: ");
-        String shop = scanner.nextLine();
+
+        String shop = console.promptForString("Vendor: ");
 
         System.out.print("Amount: ");
-        double amount = Double.parseDouble(scanner.nextLine());
+        double amount = Double.parseDouble(console.nextLine());
 
         // transaction object
         Transaction t = new Transaction(date, time, description, shop, amount);
 
         // saves it
-        TransactionService.saveTransaction(t);
+        TransactionFileReader.saveTransaction(t);
         transactions.add(t);
 
         System.out.println("Deposit added");
     }
 
-    private static void addPayment(Scanner scanner, ArrayList<Transaction> transactions){
+    private void addPayment(ArrayList<Transaction> transactions){
         LocalDateTime now = LocalDateTime.now();
         String defaultDate = now.toLocalDate().toString();
         String defaultTime = now.toLocalTime().withNano(0).toString();
 
-        String date = promptOrDefault(scanner, "Date (YYYY-MM-DD) [Enter for " + defaultDate + "]: ", defaultDate);
-        String time = promptOrDefault(scanner, "Time (HH:MM:SS) [Enter for " + defaultTime + "]: ", defaultTime);
+        String date = console.promptOrDefault("Date (YYYY-MM-DD) [Enter for " + defaultDate + "]: ", defaultDate);
+        String time = console.promptOrDefault("Time (HH:MM:SS) [Enter for " + defaultTime + "]: ", defaultTime);
 
-        System.out.print("Description: ");
-        String description = scanner.nextLine();
+        String description = console.promptForString("Description: ");
 
-        System.out.print("Vendor: ");
-        String vendor = scanner.nextLine();
+        String vendor = console.promptForString("Vendor: ");
 
-        System.out.print("Amount: ");
-        double amount = Double.parseDouble(scanner.nextLine());
+        double amount = console.promptForDouble("Amount: ");
         amount = -Math.abs(amount);
 
         Transaction t = new Transaction(date, time, description, vendor, amount);
 
-        TransactionService.saveTransaction(t);
+        TransactionFileReader.saveTransaction(t);
         transactions.add(t);
 
         System.out.println("Payment added");
