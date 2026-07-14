@@ -60,5 +60,7 @@ public class Transaction {
         DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm:ss");
         return String.format("%-20s %-20s %-45s %-35s $%,.2f", this.getDate().format(dateFmt), this.getTime().format(timeFmt), description, vendor, amount);
     }
+
+
 }
 

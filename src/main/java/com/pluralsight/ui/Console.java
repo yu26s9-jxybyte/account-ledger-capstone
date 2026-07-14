@@ -13,6 +13,24 @@ public class Console {
     public Console(){
         scanner = new Scanner(System.in);
     }
+
+    /**
+     * Checks if user input is between minimum and maximum character count.
+     * @param input the string the user entered.
+     * @param minCharacterCount the minimum characters allowed to be in input.
+     * @param maxCharacterCount the maximum characters allowed to be in input.
+     * @return String the user entered.
+     */
+    public String characterCountLimit(String input, int minCharacterCount, int maxCharacterCount){
+        if (input.length() < minCharacterCount){
+            throw new IllegalArgumentException("Error: Character Count Cannot be less than " + minCharacterCount);
+        }
+        if (input.length() > maxCharacterCount){
+            throw new IllegalArgumentException("Error: Character Count Cannot Exceed " + maxCharacterCount);
+        }
+        return input;
+    }
+
     /**
      * Prompts user to enter a string.
      * @param prompt the message displayed to the user.
@@ -83,11 +101,8 @@ public class Console {
             }
         }
     }
-    /**
-     * Prompts the user for a date and time.
-     * @return LocalDateTime the date and time parsed and validated.
-     */
-    public LocalDateTime promptForDateTime(String prompt){
+
+    public LocalDateTime promptForDateTime(){
         boolean isFuture;
         LocalDateTime dateTime;
 
