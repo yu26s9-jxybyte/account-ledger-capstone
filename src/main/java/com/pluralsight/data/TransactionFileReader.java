@@ -67,6 +67,7 @@ public class TransactionFileReader {
         } catch (IOException ex) {
             System.out.println("Could not save transaction.");
         }
+        loadTransactions();
     }
 
     public ArrayList<Transaction> getTransactions(){
