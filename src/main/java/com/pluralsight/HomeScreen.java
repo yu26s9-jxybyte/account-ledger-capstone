@@ -3,11 +3,9 @@ package com.pluralsight;
 import com.pluralsight.data.TransactionFileReader;
 import com.pluralsight.models.Transaction;
 import com.pluralsight.ui.Console;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 
 
 public class HomeScreen {
@@ -48,7 +46,7 @@ public class HomeScreen {
                     addPayment();
                     break;
                 case "L":
-                    LedgerScreen ledgerScreen = new LedgerScreen(console, transactionFileReader.getTransactions());
+                    LedgerScreen ledgerScreen = new LedgerScreen(console, transactionFileReader);
                     ledgerScreen.showLedger();
                     break;
                 case "X":
