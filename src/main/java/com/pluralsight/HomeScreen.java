@@ -90,17 +90,16 @@ public class HomeScreen {
   }
 
   private void addPayment() {
-      LocalDate localDate = console.promptForDate("Enter Date: ");
-      LocalTime localTime = console.promptForTime("Enter Time: ");
+      LocalDateTime localDateTime = console.promptForDateTime();
 
-      String description = console.promptForString("Description: ");
+      // These have to be typed by the user
+      String description = console.characterCountLimit("Description: ", 1, DESCRIPTION_MAX_CHARACTER_COUNT );
 
-      String vendor = console.promptForString("Vendor: ");
-
+      String vendor = console.characterCountLimit("Vendor: ", 1, VENDOR_MAX_CHARACTER_COUNT);
       double amount = console.promptForDouble("Amount: ");
       amount = -Math.abs(amount);
 
-      Transaction t = new Transaction(LocalDateTime.of(localDate, localTime), description, vendor, amount);
+      Transaction t = new Transaction(localDateTime, description, vendor, amount);
 
       transactionFileReader.saveTransaction(t);
 
