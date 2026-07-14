@@ -14,6 +14,7 @@ public class HomeScreen {
     private final Console console;
     private final TransactionFileReader transactionFileReader;
     private final ArrayList<Transaction> transactions = new ArrayList<>();
+
     public HomeScreen(Console console, TransactionFileReader transactionFileReader) {
         this.console = console;
         this.transactionFileReader = transactionFileReader;
@@ -51,20 +52,15 @@ public class HomeScreen {
         }while(!choice.equalsIgnoreCase("x"));
 
   }
-    //lets the user press Enter to use a default value
-
 
 
     private void addDeposit() {
 
-
-        // Ask user for time, but allow enter to auto-fill
         LocalDate localDate = console.promptForDate("Enter Date: ");
         LocalTime localTime = console.promptForTime("Enter Time: ");
 
         // These have to be typed by the user
         String description = console.promptForString("Description: ");
-
 
         String vendor = console.promptForString("Vendor: ");
 

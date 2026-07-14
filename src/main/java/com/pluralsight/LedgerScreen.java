@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class LedgerScreen {
     private final Console console;
     private final ArrayList<Transaction> transactions;
+
     public LedgerScreen(Console console, ArrayList<Transaction> transactions){
         this.console = console;
         this.transactions = transactions;
@@ -17,13 +18,14 @@ public class LedgerScreen {
 
     public void showLedger() {
         while (true) {
-            System.out.println("\nLedger");
-            System.out.println("A) All Transactions");
-            System.out.println("D) Deposits Only");
-            System.out.println("P) Payments Only");
-            System.out.println("R) Reports");
-            System.out.println("H) Home");
-            System.out.print("Choose an option: ");
+            System.out.println("""
+                    \nLedger
+                    [A] All Transactions
+                    [D] Deposits Only
+                    [P] Payments Only
+                    [R] Reports
+                    [H] Home
+                    """);
 
             String choice = console.promptForStringOptions("Choose an option: ", "a","d","p","r","h");
 
