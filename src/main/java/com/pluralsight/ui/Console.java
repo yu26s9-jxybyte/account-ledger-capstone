@@ -19,11 +19,15 @@ public class Console {
      * @return String the user entered.
      */
     public String promptForString(String prompt){
-        System.out.println(prompt);
+        System.out.print(prompt);
         return scanner.nextLine().trim();
     }
 
-
+    /**
+     * Prompts the user for a date.
+     * @param prompt the message displayed to the user.
+     * @return LocalDate the parsed and validated date the user entered.
+     */
     public LocalDate promptForDate(String prompt){
         while(true) {
             try {
@@ -34,6 +38,11 @@ public class Console {
             }
         }
     }
+    /**
+     * Parses and validates date in format YYYY-M-D or YYYY-MM-DD not exceeding today's date.
+     * @param input the date being parsed and validated.
+     * @return LocalDate the date user enters.
+     */
     public LocalDate parseDate(String input){
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy-M-d");
         try {
@@ -46,6 +55,11 @@ public class Console {
             throw new IllegalArgumentException("Error: Invalid Date. Please Try Again.");
         }
     }
+    /**
+     * Parses and validates time in HH:MM format.
+     * @param input the time being parsed and validated.
+     * @return LocalTime, the time the user entered.
+     */
     public LocalTime parseTime(String input){
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("H:mm");
         try {
@@ -69,7 +83,10 @@ public class Console {
             }
         }
     }
-
+    /**
+     * Prompts the user for a date and time.
+     * @return LocalDateTime the date and time parsed and validated.
+     */
     public LocalDateTime promptForDateTime(String prompt){
         boolean isFuture;
         LocalDateTime dateTime;
@@ -99,6 +116,12 @@ public class Console {
         }
     }
 
+    /**
+     * Prompts user for a menu option input.
+     * @param prompt the message displayed to the user.
+     * @param options the options user has to choose from.
+     * @return the String the user entered.
+     */
     public String promptForStringOptions(String prompt, String ...options){
         while(true) {
             String userInput = promptForString(prompt);

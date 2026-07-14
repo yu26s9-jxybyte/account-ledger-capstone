@@ -3,17 +3,14 @@ package com.pluralsight;
 import com.pluralsight.data.TransactionFileReader;
 import com.pluralsight.models.Transaction;
 import com.pluralsight.ui.Console;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 
 
 public class HomeScreen {
     private final Console console;
     private final TransactionFileReader transactionFileReader;
-    private final ArrayList<Transaction> transactions = new ArrayList<>();
 
     public HomeScreen(Console console, TransactionFileReader transactionFileReader) {
         this.console = console;
@@ -23,7 +20,7 @@ public class HomeScreen {
 
     public void mainDisplay(){
         String choice;
-        do {
+        while(true){
             System.out.println("""
                     Home Screen
                     [D] Add a deposit
@@ -40,7 +37,7 @@ public class HomeScreen {
                     addPayment();
                     break;
                 case "L":
-                    LedgerScreen ledgerScreen = new LedgerScreen(console, transactionFileReader.getTransactions());
+                    LedgerScreen ledgerScreen = new LedgerScreen(console, transactionFileReader);
                     ledgerScreen.showLedger();
                     break;
                 case "X":
@@ -49,7 +46,7 @@ public class HomeScreen {
                 default:
                     System.out.println("Invalid choice. Please select valid option.");
             }
-        }while(!choice.equalsIgnoreCase("x"));
+        }
 
   }
 
