@@ -13,6 +13,8 @@ import java.util.ArrayList;
 public class HomeScreen {
     private final Console console;
     private final TransactionFileReader transactionFileReader;
+    private static final int DESCRIPTION_MAX_CHARACTER_COUNT = 35;
+    private static final int VENDOR_MAX_CHARACTER_COUNT = 25;
     private final ArrayList<Transaction> transactions = new ArrayList<>();
 
     public HomeScreen(Console console, TransactionFileReader transactionFileReader) {
@@ -24,13 +26,19 @@ public class HomeScreen {
     public void mainDisplay() {
         String choice;
         do {
-            System.out.println("""
-                    Home Screen
+            double balance = getBalance();
+            System.out.printf("""
+                    \n
+                    ------------------------------------
+                                Home Screen
+                      Current Balance : $%.2f
                     [D] Add a deposit
                     [P] Make a Payment
                     [L] Ledger
                     [X] Exit
-                    """);
+                    ------------------------------------
+                    """, balance
+            );
             choice = console.promptForStringOptions("Choose an option: ", "d", "p", "l", "x");
             switch (choice.toUpperCase()) {
                 case "D":
