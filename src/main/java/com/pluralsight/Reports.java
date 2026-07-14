@@ -12,9 +12,11 @@ public class Reports {
 
     // month to date
     private final Console console;
+
     public Reports(Console console){
         this.console = console;
     }
+
     public void monthToDate(ArrayList<Transaction> transactions) {
         LocalDate today = LocalDate.now();
 
@@ -24,7 +26,7 @@ public class Reports {
 
             if (date.getMonth() == today.getMonth() &&
                     date.getYear() == today.getYear()) {
-                printTransaction(t);
+                System.out.println(t);
             }
         }
     }
@@ -40,7 +42,7 @@ public class Reports {
 
             if (date.getMonth() == lastMonth.getMonth() &&
                     date.getYear() == lastMonth.getYear()) {
-                printTransaction(t);
+                System.out.println(t);
             }
         }
     }
@@ -54,7 +56,7 @@ public class Reports {
             LocalDate date = localDateTime.toLocalDate();
 
             if (date.getYear() == today.getYear()) {
-                printTransaction(t);
+                System.out.println(t);
             }
         }
     }
@@ -69,7 +71,7 @@ public class Reports {
             LocalDate date = localDateTime.toLocalDate();
 
             if (date.getYear() == lastYear) {
-                printTransaction(t);
+                System.out.println(t);
             }
         }
     }
@@ -78,7 +80,7 @@ public class Reports {
     public void searchByShop(ArrayList<Transaction> transactions, String vendor) {
         for (Transaction t : transactions) {
             if (t.getVendor().equalsIgnoreCase(vendor)) {
-                printTransaction(t);
+                System.out.println(t);
             }
         }
     }
@@ -87,14 +89,14 @@ public class Reports {
     public void reportsMenu(ArrayList<Transaction> transactions) {
 
         while (true) {
-            System.out.println("\nReports");
-            System.out.println("1) Month To Date");
-            System.out.println("2) Previous Month");
-            System.out.println("3) Year To Date");
-            System.out.println("4) Previous Year");
-            System.out.println("5) Search by Shop");
-            System.out.println("0) Back");
-            System.out.print("Choose an option: ");
+            System.out.println("""
+                    \nReports
+                    [1] Month To Date
+                    [2] Previous Month
+                    [3] Year to Date
+                    [4] Previous Year
+                    [5] Search by Shop
+                    [0] Back""");
 
             int choice = console.promptForInt("Choose an option: ", 0,5);
 
@@ -130,13 +132,13 @@ public class Reports {
     }
 
     // helper method to print a transaction
-    private void printTransaction(Transaction t) {
-        System.out.println(
-                t.getDate() + " | " +
-                        t.getTime() + " | " +
-                        t.getDescription() + " | " +
-                        t.getVendor() + " | " +
-                        t.getAmount()
-        );
-    }
+//    private void printTransaction(Transaction t) {
+//        System.out.println(
+//                t.getDate() + " | " +
+//                        t.getTime() + " | " +
+//                        t.getDescription() + " | " +
+//                        t.getVendor() + " | " +
+//                        t.getAmount()
+//        );
+//    }
 }

@@ -3,10 +3,10 @@ package com.pluralsight.models;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 
 public class Transaction {
-    //assignments
     private LocalDateTime dateTime;
     private String description;
     private String vendor;
@@ -54,10 +54,13 @@ public class Transaction {
     public void setAmount(double amount) {
         this.amount = amount;
     }
-
-    //converting back to a csv line how it shown in the actual file
-    public String toCSV(){
-        return getDate() + "|" + getTime() + "|" + description + "|" + vendor + "|" + amount;
+    @Override
+    public String toString(){
+        DateTimeFormatter dateFmt = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFmt = DateTimeFormatter.ofPattern("HH:mm:ss");
+        return String.format("%-20s %-20s %-45s %-35s $%,.2f", this.getDate().format(dateFmt), this.getTime().format(timeFmt), description, vendor, amount);
     }
+
+
 }
 
