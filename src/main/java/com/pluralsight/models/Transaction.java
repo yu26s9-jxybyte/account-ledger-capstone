@@ -59,5 +59,7 @@ public class Transaction {
     public String toCSV(){
         return getDate() + "|" + getTime() + "|" + description + "|" + vendor + "|" + amount;
     }
+
+
 }
 

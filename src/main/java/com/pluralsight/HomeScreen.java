@@ -21,7 +21,7 @@ public class HomeScreen {
 
     }
 
-    public void mainDisplay(){
+    public void mainDisplay() {
         String choice;
         do {
             System.out.println("""
@@ -49,48 +49,48 @@ public class HomeScreen {
                 default:
                     System.out.println("Invalid choice. Please select valid option.");
             }
-        }while(!choice.equalsIgnoreCase("x"));
-
-  }
-
-
-    private void addDeposit() {
-
-        LocalDate localDate = console.promptForDate("Enter Date: ");
-        LocalTime localTime = console.promptForTime("Enter Time: ");
-
-        // These have to be typed by the user
-        String description = console.promptForString("Description: ");
-
-        String vendor = console.promptForString("Vendor: ");
-
-        double amount = console.promptForDouble("Amount: ");
-
-        // transaction object
-        Transaction t = new Transaction(LocalDateTime.of(localDate, localTime), description, vendor, amount);
-
-        // saves it
-        transactionFileReader.saveTransaction(t);
-
-        System.out.println("Deposit added");
+        } while (!choice.equalsIgnoreCase("x"));
     }
 
-    private void addPayment(){
-        LocalDate localDate = console.promptForDate("Enter Date: ");
-        LocalTime localTime = console.promptForTime("Enter Time: ");
 
-        String description = console.promptForString("Description: ");
+        private void addDeposit () {
 
-        String vendor = console.promptForString("Vendor: ");
+            LocalDate localDate = console.promptForDate("Enter Date: ");
+            LocalTime localTime = console.promptForTime("Enter Time: ");
 
-        double amount = console.promptForDouble("Amount: ");
-        amount = -Math.abs(amount);
+            // These have to be typed by the user
+            String description = console.promptForString("Description: ");
 
-        Transaction t = new Transaction(LocalDateTime.of(localDate, localTime), description, vendor, amount);
+            String vendor = console.promptForString("Vendor: ");
 
-        transactionFileReader.saveTransaction(t);
+            double amount = console.promptForDouble("Amount: ");
 
-        System.out.println("Payment added");
+            // transaction object
+            Transaction t = new Transaction(LocalDateTime.of(localDate, localTime), description, vendor, amount);
+
+            // saves it
+            transactionFileReader.saveTransaction(t);
+
+            System.out.println("Deposit added");
+        }
+
+        private void addPayment () {
+            LocalDate localDate = console.promptForDate("Enter Date: ");
+            LocalTime localTime = console.promptForTime("Enter Time: ");
+
+            String description = console.promptForString("Description: ");
+
+            String vendor = console.promptForString("Vendor: ");
+
+            double amount = console.promptForDouble("Amount: ");
+            amount = -Math.abs(amount);
+
+            Transaction t = new Transaction(LocalDateTime.of(localDate, localTime), description, vendor, amount);
+
+            transactionFileReader.saveTransaction(t);
+
+            System.out.println("Payment added");
+        }
+
     }
 
-}
