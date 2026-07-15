@@ -15,7 +15,7 @@ public class HomeScreen {
     private final TransactionFileReader transactionFileReader;
     private static final int DESCRIPTION_MAX_CHARACTER_COUNT = 35;
     private static final int VENDOR_MAX_CHARACTER_COUNT = 25;
-    private final ArrayList<Transaction> transactions = new ArrayList<>();
+
 
     public HomeScreen(Console console, TransactionFileReader transactionFileReader) {
         this.console = console;
@@ -31,7 +31,7 @@ public class HomeScreen {
                     \n
                     ------------------------------------
                                 Home Screen
-                      Current Balance : $%.2f
+                      Current Balance : $%,.2f
                     [D] Add a deposit
                     [P] Make a Payment
                     [L] Ledger
@@ -59,6 +59,14 @@ public class HomeScreen {
             }
         }while(!choice.equalsIgnoreCase("x"));
 
+    private void addDeposit () {
+
+        LocalDateTime localDateTime = console.promptForDateTime();
+
+        // These have to be typed by the user
+        String description = console.promptForString("Description: ");
+
+        String vendor = console.promptForString("Vendor: ");
     }
 
     /** Returns Current Balance of Account */
@@ -88,6 +96,24 @@ public class HomeScreen {
 
         System.out.println("Deposit added");
     }
+    private double getBalance() {
+        double balance = 0;
+        for (int i = 0; i < transactionFileReader.getTransactions().size(); i++)
+        {   balance += transactionFileReader.getTransactions().get(i).getAmount(); }
+        return balance;
+    }
+    private void addPayment () {
+        LocalDate localDate = console.promptForDate("Enter Date: ");
+        LocalTime localTime = console.promptForTime("Enter Time: ");
+
+        String description = console.promptForString("Description: ");
+
+        String vendor = console.promptForString("Vendor: ");
+
+        double amount = console.promptForDouble("Amount: ");
+        amount = -Math.abs(amount);
+
+        Transaction t = new Transaction(LocalDateTime.of(localDate, localTime), description, vendor, amount);
 
     private void addPayment() {
         LocalDateTime localDateTime = console.promptForDateTime();
@@ -107,3 +133,4 @@ public class HomeScreen {
     }
 
 }
+
