@@ -53,7 +53,7 @@ public class LedgerScreen {
                     break;
         // functionality once you choose "C"
                 case "C":
-                    customSearch(transactions);
+                    customSearch();
                     break;
 
                 case "H":
@@ -81,7 +81,7 @@ public class LedgerScreen {
         System.out.println("\nPayments Only");
         ArrayList<Transaction> transactions = transactionFileReader.getTransactions();
         ArrayList<Transaction> payments = transactions.stream().filter(transaction ->
-                        transaction.getAmount() > 0)
+                        transaction.getAmount() < 0)
                 .collect(Collectors.toCollection(ArrayList::new));
         displayTransactionsMenu("\nPayments Only", payments);
     }
@@ -115,7 +115,8 @@ public class LedgerScreen {
         return currentPage;
     }
 // Custom search method to filter through transactions by any attribute
-    public void customSearch(ArrayList<Transaction> ledger){
+    public void customSearch(){
+
         String startDate = console.promptForString("What is the start date? (yyyy-mm-dd) ");
         startDate = dateCheck(startDate);
         String endDate = console.promptForString("What is the end date? (yyyy-mm-dd) ");
@@ -133,7 +134,7 @@ public class LedgerScreen {
         String description = console.promptForString("What is the description? ");
         String vendor = console.promptForString("What is the vendor? ");
         String amount = console.promptForString("What is the amount? ");
-        ArrayList<Transaction> custom = new ArrayList<>(ledger);
+        ArrayList<Transaction> custom = new ArrayList<>(transactionFileReader.getTransactions());
         if (!startDate.isBlank()) {
             for (int i = 0; i < custom.size(); i++) {
                 if (!custom.get(i).getDate().isAfter(LocalDate.parse(startDate))) {
@@ -179,9 +180,7 @@ public class LedgerScreen {
             }
         }
         Collections.reverse(custom);
-        for ( Transaction transaction : custom){
-            printTransaction(transaction);
-        }
+        displayTransactionsMenu("\nCustom Search", custom);
         if (custom.isEmpty()){
             System.out.println("Looks like there isn't anything that matches your filters. Try broadening your search.");
         }
