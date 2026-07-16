@@ -2,6 +2,7 @@ package com.pluralsight;
 
 import com.pluralsight.data.TransactionFileReader;
 import com.pluralsight.models.Transaction;
+import com.pluralsight.ui.Colors;
 import com.pluralsight.ui.Console;
 
 import java.time.LocalDate;
@@ -22,15 +23,29 @@ public class LedgerScreen {
 
     public void showLedger() {
         while (true) {
-            System.out.println("""
-                    \nLedger
-                    [A] All Transactions
-                    [D] Deposits Only
-                    [P] Payments Only
-                    [R] Reports
-                    [C] Custom Search
-                    [H] Home
-                    """);
+            System.out.printf("""
+                    
+                    %s------------------------------------
+                                LEDGER MENU
+                    %s------------------------------------
+                    %s  [%sA%s] All Transactions
+                    %s  [%sD%s] Deposits Only
+                    %s  [%sP%s] Payments Only
+                    %s  [%sR%s] Reports
+                    %s  [%sC%s] Custom Search
+                    %s  [%sH%s] Home
+                    %s------------------------------------
+                    """ + Colors.RESET,
+                    Colors.CYAN,
+                    Colors.CYAN,
+                    Colors.RESET, Colors.CYAN_BOLD, Colors.RESET,
+                    Colors.RESET, Colors.GREEN_BOLD, Colors.RESET,
+                    Colors.RESET, Colors.RED_BOLD, Colors.RESET,
+                    Colors.RESET, Colors.CYAN_BOLD, Colors.RESET,
+                    Colors.RESET, Colors.YELLOW_BOLD, Colors.RESET,
+                    Colors.RESET, Colors.RED_BOLD, Colors.RESET,
+                    Colors.CYAN
+            );
             // Added option to choose custom search
             String choice = console.promptForStringOptions("Choose an option: ", "a","d","p","r","h","c");
 
@@ -51,7 +66,7 @@ public class LedgerScreen {
                     Reports reports = new Reports(console);
                     reports.reportsMenu(transactionFileReader.getTransactions());
                     break;
-        // functionality once you choose "C"
+                // functionality once you choose "C"
                 case "C":
                     customSearch();
                     break;
@@ -60,13 +75,13 @@ public class LedgerScreen {
                     return;
 
                 default:
-                    System.out.println("Invalid option. Try again.");
+                    System.out.println(Colors.RED_BOLD + "Invalid option. Try again." + Colors.RESET);
             }
         }
     }
 
     private void showAll() {
-        displayTransactionsMenu("\nAll Transactions", transactionFileReader.getTransactions());
+        displayTransactionsMenu(Colors.CYAN_BOLD + "\nAll Transactions" + Colors.RESET, transactionFileReader.getTransactions());
     }
 
     private void showDeposits() {
@@ -74,16 +89,15 @@ public class LedgerScreen {
         ArrayList<Transaction> deposits = transactions.stream().filter(transaction ->
                         transaction.getAmount() > 0)
                 .collect(Collectors.toCollection(ArrayList::new));
-        displayTransactionsMenu("\nDeposits Only", deposits);
+        displayTransactionsMenu(Colors.GREEN_BOLD + "\nDeposits Only" + Colors.RESET, deposits);
     }
 
     private void showPayments() {
-        System.out.println("\nPayments Only");
         ArrayList<Transaction> transactions = transactionFileReader.getTransactions();
         ArrayList<Transaction> payments = transactions.stream().filter(transaction ->
                         transaction.getAmount() < 0)
                 .collect(Collectors.toCollection(ArrayList::new));
-        displayTransactionsMenu("\nPayments Only", payments);
+        displayTransactionsMenu(Colors.RED_BOLD + "\nPayments Only" + Colors.RESET, payments);
     }
 
     /**
@@ -97,24 +111,34 @@ public class LedgerScreen {
         int previousTransactionsDisplayed = (currentPage * 10) - 10;
         int lastPage = (transaction.size() % 10 == 0 ) ?  transaction.size() / 10 : transaction.size() / 10 + 1;
         if (currentPage < 1){
-            System.out.println("You are on the first page.");
+            System.out.println(Colors.YELLOW_BOLD + "You are on the first page." + Colors.RESET);
             return currentPage + 1;
         }
         else if (currentPage > lastPage ){
-            System.out.println("You have reached the last page.");
+            System.out.println(Colors.YELLOW_BOLD + "You have reached the last page." + Colors.RESET);
             return currentPage - 1;
         }
 
-        System.out.printf("%75s %d %n","PAGE", currentPage);
-        System.out.printf("%81s %n%-20s %-20s %-45s %-35s %s %n", header, "DATE", "TIME", "DESCRIPTION", "VENDOR", "AMOUNT");
+        System.out.printf(Colors.CYAN + "%75s %d %n" + Colors.RESET, "PAGE", currentPage);
+        System.out.printf("%s %n%-20s %-20s %-45s %-35s %s %n", header, Colors.CYAN_BOLD + "DATE" + Colors.RESET, Colors.CYAN_BOLD + "TIME" + Colors.RESET, Colors.CYAN_BOLD + "DESCRIPTION" + Colors.RESET, Colors.CYAN_BOLD + "VENDOR" + Colors.RESET, Colors.CYAN_BOLD + "AMOUNT" + Colors.RESET);
 
-        System.out.println("=".repeat(145));
+        System.out.println(Colors.CYAN + "=".repeat(145) + Colors.RESET);
         for (int i = previousTransactionsDisplayed; i< transaction.size() && i < previousTransactionsDisplayed + 10 ; i++){
-            System.out.println(transaction.get(i));
+            Transaction t = transaction.get(i);
+            String valueColor = (t.getAmount() < 0) ? Colors.RED : Colors.GREEN;
+            System.out.printf("%-20s %-20s %-45s %-35s %s%s%s%n",
+                    t.getDate(),
+                    t.getTime(),
+                    t.getDescription(),
+                    t.getVendor(),
+                    valueColor,
+                    String.format("$%,.2f", t.getAmount()),
+                    Colors.RESET
+            );
         }
         return currentPage;
     }
-// Custom search method to filter through transactions by any attribute
+    // Custom search method to filter through transactions by any attribute
     public void customSearch(){
 
         String startDate = console.promptForString("What is the start date? (yyyy-mm-dd) ");
@@ -180,13 +204,13 @@ public class LedgerScreen {
             }
         }
         Collections.reverse(custom);
-        displayTransactionsMenu("\nCustom Search", custom);
+        displayTransactionsMenu(Colors.CYAN_BOLD + "\nCustom Search" + Colors.RESET, custom);
         if (custom.isEmpty()){
-            System.out.println("Looks like there isn't anything that matches your filters. Try broadening your search.");
+            System.out.println(Colors.YELLOW_BOLD + "Looks like there isn't anything that matches your filters. Try broadening your search." + Colors.RESET);
         }
 
     }
-// Helper method to customSearch to make sure the inputted date is in the proper format
+    // Helper method to customSearch to make sure the inputted date is in the proper format
     public static String dateCheck(String stringDate){
         Scanner scanner = new Scanner(System.in);
         if (stringDate.isBlank()){
@@ -198,7 +222,7 @@ public class LedgerScreen {
                 return stringDate;
 
             } catch (DateTimeParseException e){
-                System.out.println("Date not in correct format, please try again. (yyyy-mm-dd) ");
+                System.out.println(Colors.RED_BOLD + "Date not in correct format, please try again. (yyyy-mm-dd) " + Colors.RESET);
                 stringDate = scanner.nextLine();
             }
         }
@@ -214,9 +238,9 @@ public class LedgerScreen {
 
         displayPage(pageNum, header, transaction);
         do{
-            System.out.print("=".repeat(51));
-            System.out.print(" [P] PREVIOUS PAGE [N] NEXT PAGE [X] EXIT ");
-            System.out.println("=".repeat(53));
+            System.out.print(Colors.CYAN + "=".repeat(51) + Colors.RESET);
+            System.out.print(" [" + Colors.CYAN_BOLD + "P" + Colors.RESET + "] PREVIOUS PAGE [" + Colors.CYAN_BOLD + "N" + Colors.RESET + "] NEXT PAGE [" + Colors.RED_BOLD + "X" + Colors.RESET + "] EXIT ");
+            System.out.println(Colors.CYAN + "=".repeat(53) + Colors.RESET);
             option = console.promptForStringOptions("> ","P","N","X");
             switch(option){
                 case "P":
