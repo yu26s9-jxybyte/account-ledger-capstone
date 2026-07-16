@@ -23,7 +23,7 @@ public class HomeScreen {
 
     }
 
-    public void mainDisplay(){
+    public void mainDisplay() {
         String choice;
         do {
             double balance = getBalance();
@@ -57,80 +57,45 @@ public class HomeScreen {
                 default:
                     System.out.println("Invalid choice. Please select valid option.");
             }
-        }while(!choice.equalsIgnoreCase("x"));
+        } while (!choice.equalsIgnoreCase("x"));
 
-    private void addDeposit () {
-
-        LocalDateTime localDateTime = console.promptForDateTime();
-
-        // These have to be typed by the user
-        String description = console.promptForString("Description: ");
-
-        String vendor = console.promptForString("Vendor: ");
     }
 
-    /** Returns Current Balance of Account */
-    private double getBalance() {
-        double balance = 0;
-        for (int i = 0; i < transactionFileReader.getTransactions().size(); i++)
-        {   balance += transactionFileReader.getTransactions().get(i).getAmount(); }
-        return balance;
+        private void addDeposit () {
+
+            LocalDateTime localDateTime = console.promptForDateTime();
+
+            // These have to be typed by the user
+            String description = console.promptForString("Description: ");
+
+            String vendor = console.promptForString("Vendor: ");
+        }
+
+        /** Returns Current Balance of Account */
+        private double getBalance () {
+            double balance = 0;
+            for (int i = 0; i < transactionFileReader.getTransactions().size(); i++) {
+                balance += transactionFileReader.getTransactions().get(i).getAmount();
+            }
+            return balance;
+        }
+
+
+        private void addPayment() {
+            LocalDate localDate = console.promptForDate("Enter Date: ");
+            LocalTime localTime = console.promptForTime("Enter Time: ");
+
+            String description = console.promptForString("Description: ");
+
+            String vendor = console.promptForString("Vendor: ");
+
+            double amount = console.promptForDouble("Amount: ");
+            amount = -Math.abs(amount);
+
+            Transaction t = new Transaction(LocalDateTime.of(localDate, localTime), description, vendor, amount);
+
+
+        }
     }
 
-
-    private void addDeposit() {
-        LocalDateTime localDateTime = console.promptForDateTime();
-
-        // These have to be typed by the user
-        String description = console.characterCountLimit("Description: ", 1, DESCRIPTION_MAX_CHARACTER_COUNT );
-
-        String vendor = console.characterCountLimit("Vendor: ", 1, VENDOR_MAX_CHARACTER_COUNT);
-
-        double amount = console.promptForDouble("Amount: ");
-
-        // transaction object
-        Transaction t = new Transaction(localDateTime, description, vendor, amount);
-
-        // saves it
-        transactionFileReader.saveTransaction(t);
-
-        System.out.println("Deposit added");
-    }
-    private double getBalance() {
-        double balance = 0;
-        for (int i = 0; i < transactionFileReader.getTransactions().size(); i++)
-        {   balance += transactionFileReader.getTransactions().get(i).getAmount(); }
-        return balance;
-    }
-    private void addPayment () {
-        LocalDate localDate = console.promptForDate("Enter Date: ");
-        LocalTime localTime = console.promptForTime("Enter Time: ");
-
-        String description = console.promptForString("Description: ");
-
-        String vendor = console.promptForString("Vendor: ");
-
-        double amount = console.promptForDouble("Amount: ");
-        amount = -Math.abs(amount);
-
-        Transaction t = new Transaction(LocalDateTime.of(localDate, localTime), description, vendor, amount);
-
-    private void addPayment() {
-        LocalDateTime localDateTime = console.promptForDateTime();
-
-        // These have to be typed by the user
-        String description = console.characterCountLimit("Description: ", 1, DESCRIPTION_MAX_CHARACTER_COUNT );
-
-        String vendor = console.characterCountLimit("Vendor: ", 1, VENDOR_MAX_CHARACTER_COUNT);
-        double amount = console.promptForDouble("Amount: ");
-        amount = -Math.abs(amount);
-
-        Transaction t = new Transaction(localDateTime, description, vendor, amount);
-
-        transactionFileReader.saveTransaction(t);
-
-        System.out.println("Payment added");
-    }
-
-}
 

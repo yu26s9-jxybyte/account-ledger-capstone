@@ -8,5 +8,6 @@ public class Main {
         TransactionFileReader transactionFileReader = new TransactionFileReader("transactions.csv");
         HomeScreen homeScreen = new HomeScreen(console, transactionFileReader);
         homeScreen.mainDisplay();
+
     }
 }
